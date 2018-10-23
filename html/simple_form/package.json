@@ -1,0 +1,21 @@
+{
+  "name": "simple_form",
+  "version": "1.0.0",
+  "description": "simple form with backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "form",
+    "node",
+    "express",
+    "bodyparser"
+  ],
+  "author": "erno",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}

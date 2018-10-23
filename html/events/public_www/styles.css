@@ -1,0 +1,14 @@
+.normal {
+	background-color:#34FFA1;
+	color:#000000;
+}
+
+.clicked {
+	background-color:#B60133;
+	color:#000000;
+}
+
+.hover {
+	background-color:#5509FF;
+	color:#FF0000;	
+}

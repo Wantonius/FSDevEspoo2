@@ -1,0 +1,17 @@
+{
+  "name": "canvas_example",
+  "version": "1.0.0",
+  "description": "canvas example",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "canvas"
+  ],
+  "author": "erno",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
