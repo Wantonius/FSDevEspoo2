@@ -9,15 +9,56 @@ class App extends Component {
 	  super(props);
 	  this.state = {
 		  list:[],
-		  id:100,
 		  mode:"Add",
 		  editItem:{}
 	  }
   }
   
+  componentDidMount() {
+	  this.getShoppingList();
+  }
+  
+  getShoppingList = () => {
+	  let getObject = {
+		  method:"GET",
+		  mode:"cors",
+		  headers:{"Content-Type":"application/json"}
+	  }
+	  fetch("/api/shopping", getObject).then((response) => {
+		  if(response.ok) {
+			  response.json().then((data) => {
+				  this.setState({
+					  list:data
+				  })
+			  }).catch((err) => {
+				  console.log(err);
+			  })
+		  } else {
+			  console.log("Response not 200 OK:"+response.status);
+		  }
+	  }).catch((err) => {
+		  console.log(err);
+	  });
+  }
+  
   addToList = (item) => {
 	if(this.state.mode === "Add") {
-	  item.id = this.state.id;
+	  let postObject = {
+		  method:"POST",
+		  mode:"cors",
+		  headers:{"Content-Type":"application/json"},
+		  body:JSON.stringify(item)
+	  }
+	  fetch("/api/shopping",postObject).then((response) => {
+		  if(response.ok) {
+			  this.getShoppingList();
+		  } else {
+			  console.log("Response not 200 OK:"+response.status)
+		  }
+	  }).catch((err) => {
+		  console.log(err)
+	  })
+	  /*item.id = this.state.id;
 	  let tempId = this.state.id+1;
 	  let tempList = []
 	  for(let i=0;i<this.state.list.length;i++) {
@@ -28,7 +69,7 @@ class App extends Component {
 		  list:tempList,
 		  id:tempId
 	  })
-	  console.log(tempList)
+	  console.log(tempList)*/
   }
 	else {
 	  let tempList = []
@@ -62,7 +103,21 @@ class App extends Component {
   }
   
   removeFromList= (id) => {
-	  let tempId = parseInt(id,10);
+	let deleteObject = {
+		method:"DELETE",
+		mode:"cors",
+		headers:{"Content-Type":"application/json"}
+	}
+	fetch("/api/shopping/"+id,deleteObject).then((response) => {
+		if(response.ok) {
+			this.getShoppingList();
+		} else {
+			console.log("Response not 200 ok:"+response.status)
+		}
+	}).catch((err) => {
+		console.log(err);
+	})
+  /*	  let tempId = parseInt(id,10);
 	  let tempList = [];
 	  for(let i=0;i<this.state.list.length;i++) {
 		  if(this.state.list[i].id !== tempId) {
@@ -71,7 +126,7 @@ class App extends Component {
 	  }
 	  this.setState({
 		  list:tempList
-	  })
+	  })*/
   }
   
   render() {
