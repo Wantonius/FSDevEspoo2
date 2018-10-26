@@ -58,36 +58,30 @@ class App extends Component {
 	  }).catch((err) => {
 		  console.log(err)
 	  })
-	  /*item.id = this.state.id;
-	  let tempId = this.state.id+1;
-	  let tempList = []
-	  for(let i=0;i<this.state.list.length;i++) {
-		  tempList.push(this.state.list[i]);
-	  }
-	  tempList.push(item);
-	  this.setState({
-		  list:tempList,
-		  id:tempId
-	  })
-	  console.log(tempList)*/
-  }
+    }
 	else {
-	  let tempList = []
-	  for(let j=0;j<this.state.list.length;j++) {
-		  if(item.id !== this.state.list[j].id) {
-			  tempList.push(this.state.list[j])
-		  } else {
-			  tempList.push(item)
-		  }
-	  }
 	  this.setState({
-		  list:tempList,
-		  mode:"Add",
-		  editItem:{}
+				mode:"Add",
+				editItem:{}
 	  })
-	}
+	  let editObject = {
+		  method: "POST",
+		  mode:"cors",
+		  headers:{"Content-Type":"application/json"},
+		  body: JSON.stringify(item)
+	  }
+	  fetch("/api/shopping/"+item.id,editObject).then((response) => {			  
+		  if(response.ok) {
+			  this.getShoppingList();
+		  } else {
+			  console.log("Response not 200 OK:"+response.status)
+		  }
+	  }).catch((err) => {
+		  console.log(err);
+	  })
+		
   }
-  
+} 
   toEditMode = (id) => {
 	  let tempItem = {}
 	  let tempId = parseInt(id,10);
