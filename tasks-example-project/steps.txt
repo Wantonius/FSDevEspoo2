@@ -1,0 +1,4 @@
+1. Basic Backend
+2. Router and Login
+3. Basic frontend with login
+4. Connecting front and backend-login
