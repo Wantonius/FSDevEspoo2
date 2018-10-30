@@ -2,3 +2,4 @@
 2. Router and Login
 3. Basic frontend with login
 4. Connecting front and backend-login
+5. Connecting front to back using fetch and REST api
