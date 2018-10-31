@@ -1,12 +1,11 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const taskModel = require("../models/task")
 
 let router = express.Router();
 
-// temporary database
-let tasks_database = [];
-let id = 100;
-/*
-{
+
+/*{
 	creator: <user>,
 	assigned: [list of users],
 	name: <task name>,
@@ -19,12 +18,16 @@ let id = 100;
 //API
 
 router.get("/tasks", function(req,res) {
-	res.status(200).json(tasks_database);	
+	taskModel.find({},function(err,tasks) {
+		if(err) {
+			return res.status(404).json({"message":"not found"})
+		}
+		return res.status(200).json(tasks);
+	});
 });
 
 router.post("/tasks", function(req,res) {
-	let task = {
-		id:id,
+	let task = new taskModel({
 		creator: req.user,
 		assigned: req.body.assigned,
 		name: req.body.name,
@@ -32,30 +35,34 @@ router.post("/tasks", function(req,res) {
 		state: req.body.state,
 		startdate: req.body.startdate,
 		enddate: req.body.enddate
-	}
-	id++;
-	tasks_database.push(task);
-	res.status(200).json({"message":"success"});
+	})
+	task.save(function(err,item) {
+		if(err) {
+			return res.status(409).json({"message":err})
+		}
+		return res.status(200).json({"message":"success"});		
+	});
+
 });
 
 router.delete("/tasks/:id", function(req,res) {
-	let tempId = parseInt(req.params.id,10);
-	for(let i=0;i<tasks_database.length;i++) {
-		if(tempId === tasks_database[i].id) {
-			if(req.user !== tasks_database[i].creator) {
-				return res.status(403).json({"message":"not allowed"});
+	taskModel.findById(req.params.id, function(err,task) {
+			if(err) {
+				return res.status(404).json({"message":"not found"})
 			}
-			tasks_database.splice(i,1);
-			return res.status(200).json({"message":"success"})
-		}
-	}
-	res.status(404).json({"message":"not found"});
+			if(task.creator == req.user) {
+				taskModel.deleteOne({"_id":req.params.id}, function(err) {
+					if(err) {
+						return res.status(409).json({"message":err})
+					}
+					return res.status(200).json({"message":"success"})
+				});
+			} else {
+				return res.status(403).json({"message":"not allowed"})
+			}});
 });
-
 router.post("/tasks/:id", function(req,res) {
-	let tempId = parseInt(req.params.id,10);
-	//TODO: check user permissions for edit. Only creator and assigned users can edit
-	let task = {
+	/*let task = {
 		id:tempId,
 		assigned: req.body.assigned,
 		name: req.body.name,
@@ -63,27 +70,37 @@ router.post("/tasks/:id", function(req,res) {
 		state: req.body.state,
 		startdate: req.body.startdate,
 		enddate: req.body.enddate
-	}
-	for(let i=0;i<tasks_database.length;i++) {
-		if(tempId === tasks_database[i].id) {
+	}*/
+	taskModel.findById(req.params.id, function(err, task) {
+			if(err) {
+				return res.status(404).json({"message":"not found"})
+			}
 			let access = false;
-			if(req.user ===  tasks_database[i].creator) {
+			if(req.user ===  task.creator) {
 				access = true;
 			}
-			for(let j = 0; j<tasks_database[i].assigned.length; j++) {
-				if(req.user === tasks_database[i].assigned[j]) {
+			for(let j = 0; j<task.assigned.length; j++) {
+				if(req.user === task.assigned[j]) {
 					access = true;
 				}
 			}
 			if(!access) {
 				return res.status(403).json({"message":"not allowed"});
 			}
-			task.creator = tasks_database[i].creator;
-			tasks_database.splice(i,1,task);
-			return res.status(200).json({"message":"success"})
-		}
-	}
-	res.status(404).json({"message":"not found"});
+			taskModel.findOneAndUpdate({"_id":req.params.id},
+				{$set:{"name":req.body.name,
+					"assigned":req.body.assigned,
+					"description":req.body.description,
+					"state":req.body.state,
+					"startdate":req.body.startdate,
+					"enddate":req.body.enddate}		
+				}, function(err) {
+						if(err) {
+							return res.status(409).json({"message":"conflict"})
+						}
+						return res.status(200).json({"message":"success"});
+			});		
+	});
 });
 
 module.exports = router;
