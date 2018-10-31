@@ -11,6 +11,9 @@ export default class NavBar extends React.Component {
 	saveToStorage = (event) => {
 		let target = "/"+event.target.name
 		sessionStorage.setItem("target",target);
+		if(this.props.mode === "Edit") {
+			this.props.changeEditMode("Add");
+		}
 	}
 	
 	render() {

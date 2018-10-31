@@ -22,13 +22,17 @@ export default class Main extends React.Component {
 				<Route path="/list" render={() => (
 				this.props.isLogged ?
 					(<TasksList	list={this.props.list}
-					 removeTask={this.props.removeTask}/>):
+					 removeTask={this.props.removeTask}
+					 changeEditMode={this.props.changeEditMode}/>):
 					(<Redirect to="/"/>)
 				)}/>
 				<Route path="/form" render={() => (
 				this.props.isLogged ?
 					(<TasksForm userlist={this.props.userlist}
 					  addTask={this.props.addTask}	
+					  mode={this.props.mode}
+					  editTask={this.props.editTask}
+					  changeEditMode={this.props.changeEditMode}
 					/>):
 					(<Redirect to="/"/>)
 				)}/>

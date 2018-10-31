@@ -13,7 +13,8 @@ class App extends Component {
 		  isLogged:false,
 		  mode:"Add",
 		  token:"",
-		  userlist:[]
+		  userlist:[],
+		  editTask:{}
 	  }
   }
   
@@ -181,22 +182,44 @@ class App extends Component {
   }  
   
   addTask = (task) => {
-	  let addObject = {
-		  method:"POST",
-		  mode:"cors",
-		  headers:{"Content-Type":"application/json",
-		           "token":this.state.token},
-		  body:JSON.stringify(task)
-	  }
-	  fetch("/api/tasks",addObject).then((response) => {
-		  if(response.ok) {
-			  this.getTasks();
-		  } else {
-			  console.log("Server returned with status:"+response.status)
+	  if(this.state.mode === "Add") {
+		  let addObject = {
+			  method:"POST",
+			  mode:"cors",
+			  headers:{"Content-Type":"application/json",
+					   "token":this.state.token},
+			  body:JSON.stringify(task)
 		  }
-	  }).catch((error) => {
-		  console.log(error);
-	  })
+		  fetch("/api/tasks",addObject).then((response) => {
+			  if(response.ok) {
+				  this.getTasks();
+			  } else {
+				  console.log("Server returned with status:"+response.status)
+			  }
+		  }).catch((error) => {
+			  console.log(error);
+		  })
+	  } else {
+		  console.log(task);
+		  this.changeEditMode("Add");
+		  this.props.history.push("/list");
+		  let editObject = {
+			  method:"POST",
+			  mode:"cors",
+			  headers:{"Content-Type":"application/json",
+					   "token":this.state.token},
+			  body:JSON.stringify(task)
+		  }
+		  fetch("/api/tasks/"+task.id,editObject).then((response) => {
+			if(response.ok) {
+				this.getTasks();
+			} else {
+				console.log("Server responded with status:"+response.status);				
+			}
+		  }).catch((error) => {
+			  console.log(error);
+		  })
+	  }
   }
   
   removeTask = (id) => {
@@ -216,13 +239,33 @@ class App extends Component {
 		  console.log(error);
 	  })
   }
+  
+  changeEditMode = (mode,id) => {
+		let task = {};
+		if(id) {
+			let tempId = parseInt(id,10);
+			for(let i=0;i<this.state.list.length;i++) {
+				if(tempId === this.state.list[i].id) {
+					task = this.state.list[i];
+				}
+			}
+		}
+		if(mode === "Edit") {
+			this.props.history.push("/form");
+		}
+		this.setState({
+			mode:mode,
+			editTask:task
+		})
+  }
 	
   render() {
     return (
       <div className="App">
 			<NavBar isLogged={this.state.isLogged}
 					mode={this.state.mode}
-					logout={this.logout}/>
+					logout={this.logout}
+					changeEditMode={this.changeEditMode}/>
 			<hr/>
 			<Main login={this.login}
 				  register={this.register}
@@ -230,7 +273,10 @@ class App extends Component {
 				  isLogged={this.state.isLogged}
 				  userlist={this.state.userlist}
 				  addTask={this.addTask}
-				  removeTask={this.removeTask}/>
+				  removeTask={this.removeTask}
+				  editTask={this.state.editTask}
+				  mode={this.state.mode}
+				  changeEditMode={this.changeEditMode}/>
       </div>
     );
   }

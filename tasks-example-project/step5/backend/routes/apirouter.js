@@ -57,13 +57,12 @@ router.post("/tasks/:id", function(req,res) {
 	//TODO: check user permissions for edit. Only creator and assigned users can edit
 	let task = {
 		id:tempId,
-		creator: req.user,
 		assigned: req.body.assigned,
 		name: req.body.name,
 		description: req.body.description,
 		state: req.body.state,
-		startdate: req.body.start,
-		enddate: req.body.end
+		startdate: req.body.startdate,
+		enddate: req.body.enddate
 	}
 	for(let i=0;i<tasks_database.length;i++) {
 		if(tempId === tasks_database[i].id) {
@@ -79,6 +78,7 @@ router.post("/tasks/:id", function(req,res) {
 			if(!access) {
 				return res.status(403).json({"message":"not allowed"});
 			}
+			task.creator = tasks_database[i].creator;
 			tasks_database.splice(i,1,task);
 			return res.status(200).json({"message":"success"})
 		}

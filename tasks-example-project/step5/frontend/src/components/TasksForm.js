@@ -6,13 +6,34 @@ export default class TasksForm extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			id:0,
 			name:"",
 			description:"",
 			assigned:[],
 			taskstate:"",
 			start:0,
-			end:0
+			end:0,
+			onEdit:1
 		}
+	}
+	
+	static getDerivedStateFromProps(newProps,prevState) {
+		if(newProps.mode === "Edit") {
+			if(prevState.onEdit === 1) {
+				console.log(newProps);
+				return {
+					id:newProps.editTask.id,
+					name:newProps.editTask.name,
+					description:newProps.editTask.description,
+					assigned:newProps.editTask.assigned,
+					taskstate:newProps.editTask.state,
+					start:newProps.editTask.startdate,
+					end:newProps.editTask.enddate,
+					onEdit:0
+				}
+			}
+		}
+		return null;
 	}
 	
 	onChange = (event) => {
@@ -33,6 +54,7 @@ export default class TasksForm extends React.Component {
 			return;
 		}
 		let task = {
+			"id":this.state.id,
 			"name":this.state.name,
 			"description":this.state.description,
 			"state":this.state.taskstate,
@@ -47,7 +69,8 @@ export default class TasksForm extends React.Component {
 			assigned:[],
 			taskstate:"",
 			start:0,
-			end:0
+			end:0,
+			onEdit:1
 		})	
 	}
 	
@@ -119,7 +142,7 @@ export default class TasksForm extends React.Component {
 						   name="end"
 						   value={this.state.end}/>
 				</Form.Field>
-				<Button type="submit" onClick={this.submit}>Submit</Button>
+				<Button type="submit" onClick={this.submit}>{this.props.mode}</Button>
 			</Form>
 		)
 		
