@@ -4,3 +4,4 @@
 4. Connecting front and backend-login
 5. Connecting front to back using fetch and REST api
 6. Add MongoDB and mongoose for users
+7. Redux for login

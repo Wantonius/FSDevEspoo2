@@ -2,6 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux'
 
 class ShoppingList extends React.Component {
+	
+	removeFromList = (event) => {
+		console.log("delete")
+		this.props.dispatch({
+			type:"REMOVE_FROM_LIST",
+			data:event.target.name
+		})
+	}
 
 	render() {
 			let items = this.props.list.map((item) => {
@@ -9,6 +17,8 @@ class ShoppingList extends React.Component {
 							<td>{item.count}</td>
 							<td>{item.type}</td>
 							<td>{item.price}</td>
+							<td><button name={item.id} 
+							onClick={this.removeFromList}>Remove</button></td>
 						</tr>				
 			})
 	return(
@@ -18,6 +28,7 @@ class ShoppingList extends React.Component {
 					<th>Count</th>
 					<th>Type</th>
 					<th>Price</th>
+					<th>Remove</th>
 				</tr>
 			</thead>
 			<tbody>

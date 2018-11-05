@@ -4,7 +4,9 @@ const initialState = {
 }
 
 const shoppingReducer = (state=initialState, action) => {
+	let tempList = []
 	switch(action.type) {
+
 		case 'ADD_TO_LIST':
 			console.log("Reducer - add to list");
 			let tempObject = {
@@ -13,7 +15,6 @@ const shoppingReducer = (state=initialState, action) => {
 				count:action.data.count,
 				price:action.data.price
 			}
-			let tempList = [];
 			for(let i=0;i<state.list.length;i++) {
 				tempList.push(state.list[i]);
 			}
@@ -23,6 +24,21 @@ const shoppingReducer = (state=initialState, action) => {
 				list:tempList
 			}
 			return tempState;
+		case 'REMOVE_FROM_LIST':
+			console.log("Remove from list");
+			console.log(action)
+			let tempId = parseInt(action.data,10);
+
+			for(let i=0;i<state.list.length;i++) {
+				if(tempId !== state.list[i].id) {
+					tempList.push(state.list[i]);
+				}
+			}
+			let tempState2 = {
+				id:state.id,
+				list:tempList
+			}
+			return tempState2;
 		default:
 			return state		
 	}
