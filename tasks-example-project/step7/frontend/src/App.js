@@ -3,6 +3,7 @@ import NavBar from './components/NavBar';
 import Main from './components/Main';
 import logo from './logo.svg';
 import {withRouter} from 'react-router-dom'; 
+import {connect} from 'react-redux';
 import './App.css';
 
 class App extends Component {
@@ -71,7 +72,9 @@ class App extends Component {
   }
   
   login = (user) => {
-	let loginObject= {
+	
+/*
+  let loginObject= {
 		method:"POST",
 		mode:"cors",
 		headers:{"Content-Type":"application/json"},
@@ -97,7 +100,7 @@ class App extends Component {
 	}).catch((error) => {
 		console.log(error);
 	})	
-		
+*/		
   }
   
   logout = () => {
@@ -280,5 +283,11 @@ class App extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+return {
+	isLogged:state.isLogged,
+	token:state.token
+}
+	}
 
-export default withRouter(App);
+export default withRouter(connect(mapStateToProps)(App));
