@@ -1,7 +1,7 @@
 import React from 'react';
 import {Form,Button} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-import {onLogin} from '../actions/loginActions';
+import {onLogin, onRegister} from '../actions/loginActions';
 
 class LoginForm extends React.Component {
 
@@ -33,12 +33,10 @@ class LoginForm extends React.Component {
 			password:this.state.password
 		}
 		if(event.target.name === "register") {
-			this.props.register(user);
+			console.log("LoginForm onSubmit register")
+			this.props.dispatch(onRegister(user));
 		} else {
-			/*
-			this.props.login(user);
-			*/
-			console.log("LoginForm onSubmit");
+			console.log("LoginForm onSubmit login");
 			this.props.dispatch(onLogin(user));
 		}
 		this.setState({

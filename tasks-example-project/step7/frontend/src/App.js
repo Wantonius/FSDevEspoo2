@@ -11,9 +11,7 @@ class App extends Component {
 	  super(props);
 	  this.state= {
 		  list:[],
-		  isLogged:false,
 		  mode:"Add",
-		  token:"",
 		  userlist:[],
 		  editTask:{}
 	  }
@@ -29,10 +27,6 @@ class App extends Component {
 				temp = false
 			}
 			let token = sessionStorage.getItem("token")
-			this.setState({
-				isLogged:temp,
-				token:token
-			})
 			if(temp === true) {
 				this.getTasks(token);
 				this.getUserList(token);
@@ -41,93 +35,15 @@ class App extends Component {
 	  }
   }
   
-  setSessionStorage = (isLogged,token) => {
-	  let temp;
-	  if(isLogged) {
-		  temp = "true"
-	  } else {
-		  temp = "false"
-	  }
-	  sessionStorage.setItem("isLogged",temp);
-	  sessionStorage.setItem("token",token)
-  }
-  // LOGIN API
-  register = (user) => {
-	  let registerObject = {
-		method:"POST",
-		mode:"cors",
-		headers:{"Content-Type":"application/json"},
-		body:JSON.stringify(user)
-	  }
-	  fetch("/register", registerObject).then((response) => {
-		if(response.ok) {
-			alert("Register successful")
-		}
-		if(response.status === 409) {
-			alert("Username already in use")
-		}
-	  }).catch((error) => {
-			console.log(error);
-	  })
-  }
-  
-  login = (user) => {
-	
-/*
-  let loginObject= {
-		method:"POST",
-		mode:"cors",
-		headers:{"Content-Type":"application/json"},
-		body:JSON.stringify(user)
-	}	
-	fetch("/login",loginObject).then((response) => {
-		if(response.ok) {
-			response.json().then((data) => {
-				this.setState({
-					isLogged:true,
-					token:data.token
-				})
-				this.setSessionStorage(true,data.token);
-				this.getTasks();
-				this.getUserList();
-				//this.props.history.push("/list");
-			}).catch((error) => {
-				console.log(error)
-			})			
-		} else {
-			alert("Wrong username or password")
-		}	
-	}).catch((error) => {
-		console.log(error);
-	})	
-*/		
-  }
-  
-  logout = () => {
-		let logoutObject ={
-			method:"POST",
-			mode:"cors",
-			headers:{"Content-Type":"application/json",
-					 "token":this.state.token}
-		}
-		fetch("/logout", logoutObject).then((response) => {
-			this.setState({
-				isLogged:false,
-				token:""
-			})
-			this.setSessionStorage(false,"");
-		}).catch((error) => {
-			console.log(error);
-		})
-  }
-  
+
+
   
   getUserList = (token) => {
 	  let tempToken;
 	  if(token) {
 		  tempToken = token
 	  } else {
-		  tempToken = this.state.token
+		  tempToken = this.props.token
 	  }
 	  let userObject = {
 		  method:"GET",
@@ -157,7 +73,7 @@ class App extends Component {
 	  if(token) {
 		  tempToken = token;
 	  } else {
-		  tempToken = this.state.token;
+		  tempToken = this.props.token;
 	  }
 	  let fetchObject = {
 		  method:"GET",
@@ -190,7 +106,7 @@ class App extends Component {
 			  method:"POST",
 			  mode:"cors",
 			  headers:{"Content-Type":"application/json",
-					   "token":this.state.token},
+					   "token":this.props.token},
 			  body:JSON.stringify(task)
 		  }
 		  fetch("/api/tasks",addObject).then((response) => {
@@ -210,7 +126,7 @@ class App extends Component {
 			  method:"POST",
 			  mode:"cors",
 			  headers:{"Content-Type":"application/json",
-					   "token":this.state.token},
+					   "token":this.props.token},
 			  body:JSON.stringify(task)
 		  }
 		  fetch("/api/tasks/"+task._id,editObject).then((response) => {
@@ -230,7 +146,7 @@ class App extends Component {
 		  method:"DELETE",
 		  mode:"cors",
 		  headers:{"Content-Type":"application/json",
-				   "token":this.state.token}
+				   "token":this.props.token}
 	  }
 	  fetch("/api/tasks/"+id,deleteTask).then((response) => {
 		 if(response.ok) {
@@ -264,15 +180,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-			<NavBar isLogged={this.state.isLogged}
-					mode={this.state.mode}
-					logout={this.logout}
+			<NavBar mode={this.state.mode}
 					changeEditMode={this.changeEditMode}/>
 			<hr/>
-			<Main login={this.login}
-				  register={this.register}
-				  list={this.state.list}
-				  isLogged={this.state.isLogged}
+			<Main list={this.state.list}
+				  isLogged={this.props.isLogged}
 				  userlist={this.state.userlist}
 				  addTask={this.addTask}
 				  removeTask={this.removeTask}
@@ -288,6 +200,6 @@ return {
 	isLogged:state.isLogged,
 	token:state.token
 }
-	}
+}
 
 export default withRouter(connect(mapStateToProps)(App));

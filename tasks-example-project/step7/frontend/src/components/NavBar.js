@@ -1,11 +1,13 @@
 import React from 'react';
 import {List} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {onLogout} from '../actions/loginActions';
 
-export default class NavBar extends React.Component {
+class NavBar extends React.Component {
 
 	logout = () => {
-		this.props.logout();
+		this.props.dispatch(onLogout(this.props.token));
 	}
 	
 	saveToStorage = (event) => {
@@ -41,3 +43,12 @@ export default class NavBar extends React.Component {
 	}	
 
 }
+
+const mapStateToProps = (state) => {
+	return {
+		isLogged:state.isLogged,
+		token:state.token
+	}
+}
+
+export default connect(mapStateToProps)(NavBar);

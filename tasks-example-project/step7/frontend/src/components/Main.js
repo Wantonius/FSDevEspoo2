@@ -4,7 +4,7 @@ import LoginForm from './LoginForm';
 import TasksList from './TasksList';
 import TasksForm from './TasksForm';
 
-export default class Main extends React.Component {
+class Main extends React.Component {
 
 	render() {
 		let target="/list";
@@ -40,3 +40,5 @@ export default class Main extends React.Component {
 		)
 	}
 }
+
+export default Main;

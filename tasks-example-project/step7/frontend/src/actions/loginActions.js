@@ -20,6 +20,8 @@ export const onLogin = (user) => {
 		if(response.ok) {
 			response.json().then((data) => {
 				console.log("Action onLogin - Login success");
+				sessionStorage.setItem("isLogged", "true");
+				sessionStorage.setItem("token", data.token)
 				dispatch(loginSuccess(data.token))
 			}).catch((error) => {
 				console.log(error)
@@ -34,6 +36,47 @@ export const onLogin = (user) => {
 	})			
   }		
 }
+
+export const onLogout = (token) => {
+	return dispatch => {
+			let logoutObject ={
+			method:"POST",
+			mode:"cors",
+			headers:{"Content-Type":"application/json",
+					 "token":token}
+		}
+		return fetch("/logout", logoutObject).then((response) => {
+			sessionStorage.setItem("isLogged", "false");
+			sessionStorage.setItem("token", "");			
+			dispatch(logoutSuccess())
+		}).catch((error) => {
+			dispatch(logoutFailed(error))
+		})	
+	}
+}
+
+export const onRegister = (user) => {
+	return dispatch => {
+	let registerObject = {
+		method:"POST",
+		mode:"cors",
+		headers:{"Content-Type":"application/json"},
+		body:JSON.stringify(user)
+	  }
+	 return fetch("/register", registerObject).then((response) => {
+		if(response.ok) {
+			alert("Register successful")
+			dispatch(registerSuccess());
+		}
+		if(response.status === 409) {
+			alert("Username already in use")
+			dispatch(registerFailed("Username already in use"));
+		}
+	  }).catch((error) => {
+			dispatch(registerFailed(error));
+	  })
+	}
+} 
 
 //Action creators
 
@@ -52,4 +95,29 @@ export const loginFailed = (error) => {
 		error: error
 	}
 } 
-		
+	
+export const logoutSuccess = () => {
+	return {
+		type:LOGOUT_SUCCESS
+	}
+}	
+
+export const logoutFailed = (error) => {
+	return {
+		type:LOGOUT_FAILED,
+		error:error
+	}
+}
+
+export const registerSuccess = () => {
+	return {
+		type:REGISTER_SUCCESS
+	}
+}
+
+export const registerFailed = (error) => {
+	return {
+		type:REGISTER_FAILED,
+		error:error
+	}
+}

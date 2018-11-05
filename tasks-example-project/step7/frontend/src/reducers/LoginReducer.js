@@ -9,12 +9,31 @@ import {
 	}
 from "../actions/loginActions";
 
-const initialState = {
-	isLogged:false,
-	token:"",
-	error:"",
-	redirect:false
+function getStorage() {
+	if(sessionStorage.getItem("isLogged")) {
+		console.log("initial state - isLogged")
+		let state = {};
+		if(sessionStorage.getItem("isLogged") === "true") {
+			state.isLogged = true
+		} else {
+			state.isLogged = false
+		}
+		state.token = sessionStorage.getItem("token")
+		state.error = "";
+		state.redirect = false
+		return state
+	} else {
+		return {
+		isLogged:false,
+		token:"",
+		error:"",
+		redirect:false
+	}
+	}
+		 
 }
+
+const initialState = getStorage();
 
 const loginReducer = (state=initialState,action) => {
 	let tempState = {};
@@ -28,6 +47,7 @@ const loginReducer = (state=initialState,action) => {
 				error:"",
 				redirect:true
 			}
+
 			return tempState;
 		case LOGIN_FAILED: 
 			tempState = {
@@ -42,6 +62,8 @@ const loginReducer = (state=initialState,action) => {
 				token:"",
 				error:""
 			}
+			sessionStorage.setItem("isLogged",false);
+			sessionStorage.setItem("token","");
 			return tempState;
 		case LOGOUT_FAILED: 
 			tempState = {
