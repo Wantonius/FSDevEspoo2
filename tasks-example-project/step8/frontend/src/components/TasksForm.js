@@ -1,7 +1,8 @@
 import React from 'react';
 import {Form,Button,Dropdown} from 'semantic-ui-react';
 import {connect} from 'react-redux';
-
+import {addTask,editTask} from '../actions/taskActions';
+import {withRouter} from 'react-router-dom';
 class TasksForm extends React.Component {
 
 	constructor(props) {
@@ -63,7 +64,12 @@ class TasksForm extends React.Component {
 			"startdate":this.state.start,
 			"enddate":this.state.end
 		}
-		this.props.addTask(task);
+		if (this.props.mode === "Add") {
+			this.props.dispatch(addTask(this.props.token,task));
+		} else {
+			this.props.dispatch(editTask(this.props.token,task));
+			this.props.history.push("/list");
+		}
 		this.setState({
 			name:"",
 			description:"",
@@ -152,8 +158,11 @@ class TasksForm extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		userlist: state.tasks.userlist
+		userlist: state.tasks.userlist,
+		token: state.login.token,
+		mode: state.tasks.mode,
+		editTask: state.tasks.editTask
 	}
 }
 
-export default connect(mapStateToProps)(TasksForm);
+export default withRouter(connect(mapStateToProps)(TasksForm));

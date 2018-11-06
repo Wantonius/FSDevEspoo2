@@ -9,7 +9,8 @@ import {
 	REMOVE_TASK_SUCCESS,
 	REMOVE_TASK_FAILED,
 	EDIT_TASK_SUCCESS,
-	EDIT_TASK_FAILED
+	EDIT_TASK_FAILED,
+	CHANGE_EDIT_MODE
 } from '../actions/taskActions';
 
 const initialState = {
@@ -27,20 +28,19 @@ const taskReducer = (state = initialState, action) => {
 		case FETCH_LOADING:
 			tempState= {
 				...state,
-				loading:true
+				loading:action.loading
 			}
 			return tempState;
 		case GET_USERLIST_SUCCESS:
 			tempState = {
 				...state,
-				loading:false,
-				userlist:action.data
+				userlist:action.data,
+				error:""
 			}
 			return tempState;
 		case GET_USERLIST_FAILED:
 			tempState = {
 				...state,
-				loading:false,
 				error: action.error
 			}
 			return tempState;
@@ -48,16 +48,58 @@ const taskReducer = (state = initialState, action) => {
 			tempState = {
 				...state,
 				list:action.data,
-				loading:false
+				error:""
 			}
 			return tempState;
 		case GET_TASKS_FAILED:
 			tempState = {
 				...state,
 				error:action.error,
-				loading:false
 			}
 			return tempState;
+		case ADD_TASK_SUCCESS: 
+			tempState = {
+				...state,
+				error: ""
+			}
+			return state
+		case ADD_TASK_FAILED:
+			tempState = {
+				...state,
+				error: action.error
+			}
+			return tempState;
+		case REMOVE_TASK_SUCCESS:
+			tempState = {
+				...state,
+				error: ""
+			}
+			return tempState;
+		case REMOVE_TASK_FAILED:
+			tempState = {
+				...state,
+				error:action.error
+			}
+			return tempState;
+		case CHANGE_EDIT_MODE:
+			tempState = {
+				...state,
+				mode:action.mode,
+				editTask:action.task
+			}
+			return tempState;
+		case EDIT_TASK_SUCCESS: 
+			tempState = {
+				...state,
+				error:""
+			}
+			return tempState
+		case EDIT_TASK_FAILED:
+			tempState = {
+				...state,
+				error:action.error
+			}
+			return tempState
 		default:
 			return state;
 	}

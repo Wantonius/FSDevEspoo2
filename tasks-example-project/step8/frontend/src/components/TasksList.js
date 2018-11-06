@@ -1,15 +1,27 @@
 import React from 'react';
 import {Table, Button} from 'semantic-ui-react'
 import {connect} from 'react-redux';
+import {removeTask, changeEditMode} from '../actions/taskActions';
+import {withRouter} from 'react-router-dom';
 
 class TasksList extends React.Component {
 
 	edit = (event) => {
-		this.props.changeEditMode("Edit",event.target.id);
+		console.log("TasksList - edit")
+		let tempId = event.target.id;
+		for(let i=0;i<this.props.list.length;i++) {
+			if(tempId === this.props.list[i]._id) {
+				console.log("tempID found")
+				let editTask = this.props.list[i];
+				this.props.dispatch(changeEditMode("Edit",editTask));
+				this.props.history.push("/form");
+			}
+		}
+
 	}
 	
 	remove = (event) => {
-		this.props.removeTask(event.target.name);
+		this.props.dispatch(removeTask(this.props.token,event.target.name));
 	}
 	
 	render() {	
@@ -64,8 +76,9 @@ class TasksList extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		list:state.tasks.list
+		list:state.tasks.list,
+		token:state.login.token
 	}
 }
 
-export default connect(mapStateToProps)(TasksList);
+export default withRouter(connect(mapStateToProps)(TasksList));	

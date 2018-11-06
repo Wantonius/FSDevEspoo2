@@ -3,6 +3,7 @@ import {List} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {onLogout} from '../actions/loginActions';
+import {changeEditMode} from '../actions/taskActions';
 
 class NavBar extends React.Component {
 
@@ -14,7 +15,7 @@ class NavBar extends React.Component {
 		let target = "/"+event.target.name
 		sessionStorage.setItem("target",target);
 		if(this.props.mode === "Edit") {
-			this.props.changeEditMode("Add");
+			this.props.dispatch(changeEditMode("Add"));
 		}
 	}
 	
@@ -47,7 +48,8 @@ class NavBar extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		isLogged:state.login.isLogged,
-		token:state.login.token
+		token:state.login.token,
+		mode:state.tasks.mode
 	}
 }
 
