@@ -5,3 +5,4 @@
 5. Connecting front to back using fetch and REST api
 6. Add MongoDB and mongoose for users
 7. Redux for login
+8. Redux for task management
