@@ -6,3 +6,4 @@
 6. Add MongoDB and mongoose for users
 7. Redux for login
 8. Redux for task management
+9. PassportJS and session management for backend
