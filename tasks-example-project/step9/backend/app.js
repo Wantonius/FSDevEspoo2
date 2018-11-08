@@ -16,11 +16,11 @@ app.use(session({
 	secret:"myBestSecret",
 	saveUninitialized:false,
 	cookie:{maxAge:1000*60*60*24},
-	store: new mongoStore({
+/*	store: new mongoStore({
 		collection:"session",
-		url:"mongodb://localhost/taskssessiondb",
+		url:"mongodb+srv://test:test@testcluster-ujjvo.mongodb.net/taskssessiondb",
 		ttl:60*60*24
-	})	
+	})*/	
 }));
 
 app.use(passport.initialize());
@@ -66,7 +66,9 @@ passport.deserializeUser(function(_id,done) {
 	});
 });
 
-mongoose.connect("mongodb://localhost/tasksdatabase").then(
+mongourl = 'mongodb+srv://<username>:<password>@<clustername_from_mongoatlas_check_connecting>.mongodb.net/'
+
+mongoose.connect(mongourl,{dbName:"tasksdatabase"}).then(
 	() => {console.log("MongoDB connection success")},
 	(error) => {console.log("MongoDB connection failure:"+error)}
 )
