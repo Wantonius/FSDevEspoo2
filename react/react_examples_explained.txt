@@ -1,0 +1,39 @@
+Some examples use semantic-ui-react, if package.json says so.
+
+1. helloworld 
+
+hello react
+
+2.statefulcomponent 
+
+Simple state management for simple component
+
+3.colorcards 	
+
+state management in complex component and passing props.
+
+4.listsandforms
+
+using .map function to create tables and form usage. Pay attention to React Synthetic Event. 
+
+https://reactjs.org/docs/events.html
+
+5. basicrouting 	
+requires react-router, react-router-dom 
+
+Simple routing example using react router
+
+6. shopbackend and withbackend
+
+Simple shoppinglist application with backend. Uses fetch to handle communication. Backend uses express, body-parser to generate REST API
+
+7. hoc-example
+
+example of higher order component like React Router or React Redux although much simpler version obviously
+
+8. reduxtest
+
+Hello world for redux. Requires react-router, react-router-dom, redux and react-redux
+ 
+
+ 
