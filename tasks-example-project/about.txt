@@ -1,0 +1,7 @@
+Task Management example in steps:
+
+Libraries and technologies: Front: React, React-Redux, React-Router, Semantic-UI-React 
+
+Back: NodeJS, Express, body-parser, MongoDB, Mongoose, Express-session, connect-mongo
+
+Task management application.
