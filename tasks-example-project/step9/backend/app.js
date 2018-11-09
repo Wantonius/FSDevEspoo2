@@ -41,6 +41,9 @@ passport.use("local-login", new localStrategy({
 		if(err) {
 			return done(err);		
 		}
+		if(!user) {
+			return done(null,false,"Wrong username or password");
+		}
 		if(isPasswordValid(password,user.password)) {
 			let token = createToken();
 			req.session.token = token;
