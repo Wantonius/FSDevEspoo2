@@ -10,17 +10,25 @@ const passport = require("passport");
 const localStrategy = require("passport-local").Strategy;
 
 let app = express();
+
+
+mongourl = 'mongodb+srv://<username>:<password>@<clustername>.mongodb.net/'
+
+mongoose.connect(mongourl,{dbName:"tasksdatabase"}).then(
+	() => {console.log("MongoDB connection success")},
+	(error) => {console.log("MongoDB connection failure:"+error)}
+)
 app.use(session({
 	name:"taskmaster-id",
 	resave:false,
 	secret:"myBestSecret",
 	saveUninitialized:false,
 	cookie:{maxAge:1000*60*60*24},
-/*	store: new mongoStore({
+	store: new mongoStore({
 		collection:"session",
-		url:"mongodb+srv://test:test@testcluster-ujjvo.mongodb.net/taskssessiondb",
+		mongooseConnection:mongoose.connection,
 		ttl:60*60*24
-	})*/	
+	})	
 }));
 
 app.use(passport.initialize());
@@ -69,12 +77,7 @@ passport.deserializeUser(function(_id,done) {
 	});
 });
 
-mongourl = 'mongodb+srv://<username>:<password>@<clustername_from_mongoatlas_check_connecting>.mongodb.net/'
 
-mongoose.connect(mongourl,{dbName:"tasksdatabase"}).then(
-	() => {console.log("MongoDB connection success")},
-	(error) => {console.log("MongoDB connection failure:"+error)}
-)
 
 app.use(bodyParser.json());
 
