@@ -37,5 +37,5 @@ Moved REST api to Redux. Created taskActions and taskReducer. Combined reducers 
 Backend changes. Added session management using express session and connect-mongo. Moved login management to use passportJS. Still uses former token-management system also. That can be removed without any problems
 
 Future steps:
-10. Fine tuning and bug fixed. Also need to add DetailedView of tasks that can be accessed from TasksList 
+10. Fine tuning and bugs fixed. Also need to add DetailedView of tasks that can be accessed from TasksList 
 11. CSS and style tuning.
