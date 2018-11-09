@@ -1,9 +1,41 @@
 1. Basic Backend
+
+NodeJS and express backend for task manager application. Does not 
+contain any user management and database is a dummy
+
 2. Router and Login
+
+Moved task management into its own express router and added basic user management
+
 3. Basic frontend with login
+
+React frontend with Semantic UI react. No connection to backend as of yet. 
+
 4. Connecting front and backend-login
+
+Login works with backend. Bugs may still occur but basic functionality should work. 
+
 5. Connecting front to back using fetch and REST api
+
+REST API between frontend and backend connected. User restrictions
+should work. Still no fine tuning so occasional bugs or strange behavior may occur. 
+
 6. Add MongoDB and mongoose for users
+
+Added mongoDB support with mongoose. 
+
 7. Redux for login
+Technology added: redux, redux-react, redux-thunk
+Moved login to use Redux. loginActions and loginReducer should work now. No fine tuning so still bugs may appear
+
 8. Redux for task management
+
+Moved REST api to Redux. Created taskActions and taskReducer. Combined reducers and fixed mapStateToProps functions accordingly.
+
 9. PassportJS and session management for backend + optional connection changes for mongodb atlas
+
+Backend changes. Added session management using express session and connect-mongo. Moved login management to use passportJS. Still uses former token-management system also. That can be removed without any problems
+
+Future steps:
+10. Fine tuning and bug fixed. Also need to add DetailedView of tasks that can be accessed from TasksList 
+11. CSS and style tuning.
