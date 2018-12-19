@@ -50,7 +50,7 @@ public class ShoppingController {
     }
     
     @RequestMapping(value="/api/shopping/{id}", method=RequestMethod.DELETE)
-    public ResponseEntity<String> removeFromList(@PathVariable long id) {
+    public ResponseEntity<String> removeFromList(@PathVariable String id) {
         boolean success = service.removeFromList(id);
         if(success) {
             return new ResponseEntity("{\"message\":\"success\"}",HttpStatus.OK);
@@ -60,7 +60,7 @@ public class ShoppingController {
     }
     
     @RequestMapping(value="/api/shopping/{id}", method=RequestMethod.PATCH)
-    public ResponseEntity<String> editItem(@PathVariable long id, @RequestBody ShoppingItem item) {
+    public ResponseEntity<String> editItem(@PathVariable String id, @RequestBody ShoppingItem item) {
         boolean success = service.editItem(id, item);
         if(success) {
             return new ResponseEntity("{\"message\":\"success\"}",HttpStatus.OK);

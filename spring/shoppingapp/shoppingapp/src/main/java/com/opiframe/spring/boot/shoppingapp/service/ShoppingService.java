@@ -6,8 +6,10 @@
 package com.opiframe.spring.boot.shoppingapp.service;
 
 import com.opiframe.spring.boot.shoppingapp.data.ShoppingItem;
+import com.opiframe.spring.boot.shoppingapp.data.ShoppingRepo;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,54 +19,39 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShoppingService {
     
-    private final List<ShoppingItem> database = new ArrayList<>();
+    @Autowired private ShoppingRepo repo;
+
     
     public boolean addToList(ShoppingItem item) {
         if(item.getType() == null) {
             return false;
         }
-        database.add(item);
+        try {
+            repo.insert(item);
+        } catch(Exception e) {
+            return false;
+        }
         return true;
     }
     
     public List<ShoppingItem> getDatabase() {
-        return database;
+        return repo.findAll();
     }
     
     public List<ShoppingItem> searchDatabase(String type) {
-        List<ShoppingItem> tempList = new ArrayList<>();
-        for(ShoppingItem i:database) {
-            if(i.getType().equals(type)) {
-                tempList.add(i);
-            }
-        }
-        return tempList;
+        return repo.findByTypeIgnoreCase(type);
     }
     
-    public boolean removeFromList(long id) {
-        for(ShoppingItem i:database) {
-            if(i.getId() == id) {
-                database.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    public boolean editItem(long id, ShoppingItem item) {
-        int index = 0;
-        if(item.getType() == null) {
+    public boolean removeFromList(String id) {
+        try {
+            repo.deleteById(id);
+        } catch (Exception e) {
             return false;
         }
-        for(ShoppingItem i:database) {
-        if(i.getId() == id) {
-                database.get(index).setType(item.getType());
-                database.get(index).setCount(item.getCount());
-                database.get(index).setPrice(item.getPrice());
-                return true;
-            }  
-        index++;
-        }
-        return false;
+        return true;
+    }
+    
+    public boolean editItem(String id, ShoppingItem item) {
+        return repo.editItem(id,item);
     }
 }
