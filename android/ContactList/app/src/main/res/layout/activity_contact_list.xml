@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundBlack"
     tools:context=".ContactList">
 
     <Button
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/addbutton"
         android:text="Add"
+        android:background="@color/textColor"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
 
@@ -20,6 +22,7 @@
         android:layout_height="match_parent"
         android:id="@+id/contactlistview"
         android:layout_above="@id/addbutton"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:divider="@color/backgroundBlack">
     </ListView>
 </RelativeLayout>

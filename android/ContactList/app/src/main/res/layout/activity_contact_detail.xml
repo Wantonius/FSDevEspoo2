@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactDetailActivity">
+    tools:context=".ContactDetailActivity"
+    android:background="@color/backgroundBlack">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,11 +14,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="First Name:"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/firstnameedit"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
     </LinearLayout>
     <LinearLayout
@@ -29,11 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Last Name:"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/lastnameedit"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
     </LinearLayout>
     <LinearLayout
@@ -45,11 +50,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Address:"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/addressedit"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
     </LinearLayout>
     <LinearLayout
@@ -61,11 +68,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone:"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/phoneedit"
+            android:textColor="@color/textColor"
             android:inputType="phone"
             android:textSize="20sp"/>
     </LinearLayout>
@@ -78,11 +87,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Email:"
+            android:textColor="@color/textColor"
             android:textSize="20sp"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/emailedit"
+            android:textColor="@color/textColor"
             android:inputType="textEmailAddress"
             android:textSize="20sp"/>
     </LinearLayout>
@@ -90,6 +101,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
+        android:background="@color/textColor"
         android:id="@+id/savebutton"
         android:layout_below="@id/emaillayout"
         android:layout_centerHorizontal="true"/>

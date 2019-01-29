@@ -1,13 +1,19 @@
 package com.opiframe.android.contactlist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -38,20 +44,65 @@ public class ContactList extends AppCompatActivity {
                 startActivityForResult(i,100);
             }
         });
+        lw.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int pos, long id) {
+                final int position = pos;
+                AlertDialog.Builder builder = new AlertDialog.Builder(ContactList.this);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        adapter.remove(adapter.getItem(position));
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                });
+                builder.setMessage("Do you wish to delete this?");
+                builder.show();
+                return true;
+            }
+        });
+        updateAdapter();
     }
+
+    private void updateAdapter() {
+        Cursor c = getContentResolver().query(Contact.CONTENT_URI, null, null, null, null);
+        if(c.getCount() > 0) {
+            adapter.clear();
+            c.moveToFirst();
+            do {
+                    Contact temp = new Contact();
+                    temp.setFirstname(c.getString(c.getColumnIndex(Contact.FIRSTNAME)));
+                    temp.setLastname(c.getString(c.getColumnIndex(Contact.LASTNAME)));
+                    temp.setAddress(c.getString(c.getColumnIndex(Contact.ADDRESS)));
+                    temp.setPhone(c.getString(c.getColumnIndex(Contact.PHONE)));
+                    temp.setEmail(c.getString(c.getColumnIndex(Contact.EMAIL)));
+                    adapter.add(temp);
+                } while (c.moveToNext());
+            adapter.notifyDataSetChanged();
+            }
+        }
+
 
     @Override
     protected void onActivityResult(int req, int res, Intent data) {
         if(req == 100) {
             if(res == Activity.RESULT_OK) {
-                Contact temp = new Contact();
-                temp.setFirstname(data.getStringExtra("firstname"));
-                temp.setLastname(data.getStringExtra("lastname"));
-                temp.setAddress(data.getStringExtra("address"));
-                temp.setEmail(data.getStringExtra("email"));
-                temp.setPhone(data.getStringExtra("phone"));
-                adapter.add(temp);
-                adapter.notifyDataSetChanged();
+                ContentValues v = new ContentValues();
+                v.put(Contact.FIRSTNAME,data.getStringExtra("firstname"));
+                v.put(Contact.LASTNAME,data.getStringExtra("lastname"));
+                v.put(Contact.ADDRESS, data.getStringExtra("address"));
+                v.put(Contact.PHONE, data.getStringExtra("phone"));
+                v.put(Contact.EMAIL, data.getStringExtra("email"));
+                if(getContentResolver().insert(Contact.CONTENT_URI, v) == null) {
+                    Log.d(TAG,"Insert failed");
+                    return;
+                }
+                updateAdapter();
             }
         }
 

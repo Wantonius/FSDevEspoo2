@@ -2,16 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundBlack"
     android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
+        android:textColor="@color/textColor"
         android:id="@+id/row_name"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:textColor="@color/textColor"
         android:id="@+id/row_address"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textColor="@color/textColor"
             android:textSize="16sp"
             android:id="@+id/row_phone"/>
         <TextView
@@ -28,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="16sp"
+            android:textColor="@color/textColor"
             android:id="@+id/row_email"/>
     </LinearLayout>
 </LinearLayout>
